@@ -1,13 +1,17 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* the base layer is for things that are applied to plain HTML elements */
+@layer base {
+  body {
+    @apply 
+    min-h-screen 
+    bg-slate-800
+    grid place-items-center /* these put all the text in a grid and then center them */
+    font-mono
+    tracking-wider /* increase the letter spacing */
+    px-4 /* this helps the display in smaller screens */
+    ;
+  }
 }
