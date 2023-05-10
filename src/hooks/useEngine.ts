@@ -6,12 +6,13 @@ import useTypings from "./useTypings";
 
 export type State = "start" | "run" | "finish";
 
-const NUMBER_OF_WORDS = 12;
+const MAX_TEXT_WINDOW_SIZE = 1152;
 const COUNTDOWN_SECONDS = 30;
 
 const useEngine = () => {
   const [state, setState] = useState<State>("start");
-  const {words, updateWords } = useWords(NUMBER_OF_WORDS);
+  const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
+  const {words, updateWords } = useWords(textWindowSize);
   const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(COUNTDOWN_SECONDS);
   const { typed, cursor, clearTyped, resetTotalTyped, totalTyped } = useTypings(state !== "finish");
 
@@ -60,7 +61,7 @@ const useEngine = () => {
     clearTyped();
   }, [clearTyped, updateWords, resetCountdown, resetTotalTyped]);
 
-  return { state, words, timeLeft, typed, errors, totalTyped, restart };
+  return { state, words, timeLeft, typed, errors, totalTyped, restart, setTextWindowSize };
 }
 
 export default useEngine;

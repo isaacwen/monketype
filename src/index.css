@@ -8,10 +8,16 @@
     @apply 
     min-h-screen 
     bg-slate-800
-    grid place-items-center /* these put all the text in a grid and then center them */
+    grid
+    content-center
+    /*grid place-items-center /* these put all the text in a grid and then center them */
     font-mono
-    tracking-wider /* increase the letter spacing */
     px-4 /* this helps the display in smaller screens */
     ;
   }
+}
+
+.test {
+  margin: auto;
+  align-content: left;
 }
