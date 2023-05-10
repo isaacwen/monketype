@@ -1,5 +1,5 @@
 import React from "react";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import RestartButton from "./components/RestartButton";
 import Results from "./components/Results";
 import UserTypings from "./components/UserTypings";
@@ -10,25 +10,30 @@ const notifyResize = () => {
   // console.log('resized to: ', window.innerWidth, 'x', window.innerHeight, 'y');
 };
 
+
+
 const App = () => {
   const {state, words, timeLeft, typed, errors, restart, totalTyped} = useEngine();
-  const textWidthRef = useRef();
+  const textWidthRef = useRef<HTMLDivElement>(null);
 
   const textWidthResize = () => {
-    console.log('resized to: ', textWidthRef.current ? textWidthRef.current.offsetWidth : 0, 'x', window.innerHeight, 'y')
-  }
+    if (textWidthRef.current) {
+      console.log(textWidthRef.current.offsetWidth);
+    }
+  };
 
   useEffect(() => {
-    
-  })
+    window.addEventListener("resize", textWidthResize);
+    return () => window.removeEventListener("resize", textWidthResize)
+  });
 
   return (
     <>
       <CountdownTimer timeLeft = {timeLeft}/>
-      <WordComponents ref={textWidthRef}>
+      <div ref = {textWidthRef} className = "relative max-w-6xl mt-3 mx-7 text-3xl leading-relaxed break-normal">
         <GeneratedWords words = {words}/>
         <UserTypings className = "absolute inset-0" userInput = {typed} words = {words}/>
-      </WordComponents>
+      </div>
       <RestartButton
         className = {"mx-auto mt-10 text-slate-500"}
         onRestart = {restart}
@@ -46,13 +51,11 @@ const App = () => {
 
 // various component
 
-const WordComponents = ({ ref, children }: { ref: React.Ref<Number>, children: React.ReactNode }) => {
-  return (
-    <div ref = {ref} className = "relative max-w-6xl mt-3 mx-7 text-3xl leading-relaxed break-normal">
-      {children}
-    </div>
-  )
-}
+// const WordComponents = ({ ref, children }: { ref: React.Ref<Number>, children: React.ReactNode }) => {
+//   return (
+    
+//   )
+// }
 
 const GeneratedWords = ({ words }: { words: string }) => {
   return <div className="text-slate-500">{words}</div>
