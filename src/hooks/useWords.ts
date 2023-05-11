@@ -1,17 +1,16 @@
 import { useCallback, useState, useEffect } from "react";
 
-const CHAR_SIZE_PIXELS = 18;
+const CHAR_SIZE_PIXELS = 19;
 var randomWords = require('random-words');
 
 const generateWords = (size: number) => {
-  console.log(size);
   const maxChars = Math.floor(size / CHAR_SIZE_PIXELS);
-  console.log("max chars", maxChars);
   var words = randomWords({exactly: 15, maxLength: 8, join: " "});
   while (words.length > maxChars) {
     console.log(words);
     words = words.slice(0, words.lastIndexOf(' '));
   }
+  words += " ";
   return words;
 };
 

@@ -7,7 +7,7 @@ import useTypings from "./useTypings";
 export type State = "start" | "run" | "finish";
 
 const MAX_TEXT_WINDOW_SIZE = 1152;
-const COUNTDOWN_SECONDS = 30;
+const COUNTDOWN_SECONDS = 5;
 
 const useEngine = () => {
   const [state, setState] = useState<State>("start");

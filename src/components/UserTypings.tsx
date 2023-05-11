@@ -23,7 +23,7 @@ const Character = ({actual, expected}: {actual: string, expected: string}) => {
   return (
     <span className = {classNames({
       "text-red-500": !isCorrect && !isWhiteSpace,
-      "text-primary-400": isCorrect && !isWhiteSpace,
+      "text-white": isCorrect && !isWhiteSpace,
       "bg-red-500/50": !isCorrect && isWhiteSpace,
     })}>{expected}</span>
   )

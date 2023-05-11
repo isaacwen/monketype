@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 
-function Caret() {
+const Caret = () => {
   return (
     <motion.div
       aria-hidden = {true}
