@@ -8,9 +8,8 @@ import { calculateAccuracyPercentage } from "./utils/helpers";
 import { motion, MotionValue } from "framer-motion";
 
 const App = () => {
-  console.log("new app created")
   const textWidthRef = useRef<HTMLDivElement>(null);
-  const {state, words, timeLeft, typed, errors, totalTyped, restart, setTextWindowSize} = useEngine();
+  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart, setTextWindowSize} = useEngine();
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
@@ -35,8 +34,9 @@ const App = () => {
         <div className = "max-w-6xl test">
           <h2 className="text-primary-400 font-medium mx-7">Time: {timeLeft}</h2>
           <div className = "relative mt-3 mx-7 text-3xl leading-relaxed break-normal" ref = {textWidthRef}>
-            <div className="text-slate-500">{words}</div>
-            <UserTypings className = "absolute inset-0" userInput = {typed} words = {words}/>
+            <div className="text-slate-500">{currentRowWords}</div>
+            <UserTypings className = "absolute inset-0" userInput = {currentRowTyped} words = {currentRowWords}/>
+            <div className="text-slate-500">{nextRowWords}</div>
           </div>
         </div>
         <RestartButton

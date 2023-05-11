@@ -10,40 +10,46 @@ const isKeyboardCodeAllowed = (code: string) => {
   );
 };
 
+const CHAR_SIZE_PIXELS = 19;
+
 const useTypings = ( enabled: boolean, size: number ) => {
   const [cursor, setCursor] = useState(0);
-  const [typed, setTyped] = useState<string>("");
-  const [words, setWords] = useState<string>(generateWords(size));
-  const totalTyped = useRef(0);
+  const [allTyped, setAllTyped] = useState("");
+  const [currentRowTyped, setCurrentRowTyped] = useState<string>("");
+  const [allWords, setAllWords] = useState("");
+  const [currentWordIdx, setCurrentWordIdx] = useState("");
+  const [currentRowWords, setCurrentRowWords] = useState<string>(generateWords(size));
+  const [errors, setErrors] = useState(0);
+  const maxChars = Math.floor(size / CHAR_SIZE_PIXELS);
 
   const updateWords = useCallback(() => {
-    setWords(generateWords(size));
+    if (allWords)
+    setCurrentRowWords(generateWords(size));
   }, [size]);
 
-  const keydownHandler = useCallback(({key, code}: KeyboardEvent) => {
+  const keydownHandler = ({key, code}: KeyboardEvent) => {
     if (!enabled || !isKeyboardCodeAllowed(code)) {
       return;
     }
     switch (key) {
       case "Backspace":
-        setTyped((prev) => prev.slice(0, -1));
+        setAllTyped(allTyped.slice(0, -1));
+        setCurrentRowTyped(currentRowTyped.slice(0, -1));
         setCursor(cursor - 1);
-        totalTyped.current -= 1;
         break;
       default:
-        setTyped((prev) => prev.concat(key));
+        if (key !== currentRowWords[cursor]) {
+          setErrors(errors + 1);
+        }
+        setAllTyped(allTyped.concat(key));
+        setCurrentRowTyped(currentRowTyped.concat(key));
         setCursor(cursor + 1);
-        totalTyped.current += 1;
     }
-  }, [cursor, enabled]);
+  };
 
   const clearTyped = useCallback(() => {
-    setTyped("");
+    setCurrentRowTyped("");
     setCursor(0);
-  }, [])
-
-  const resetTotalTyped = useCallback(() => {
-    totalTyped.current = 0;
   }, [])
 
   // attach the keyboard event listener to record keystrokes
@@ -55,7 +61,7 @@ const useTypings = ( enabled: boolean, size: number ) => {
     };
   }, [keydownHandler]);
 
-  return { typed, cursor, words, clearTyped, resetTotalTyped, updateWords }
+  return { currentRowTyped, cursor, currentRowWords, clearTyped, updateWords }
 };
 
 export default useTypings;

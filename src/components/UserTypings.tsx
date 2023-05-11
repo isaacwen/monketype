@@ -29,4 +29,4 @@ const Character = ({actual, expected}: {actual: string, expected: string}) => {
   )
 }
 
-export default UserTypings
+export default UserTypings;
