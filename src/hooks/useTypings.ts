@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { generateWords } from "../utils/helpers";
 
 const isKeyboardCodeAllowed = (code: string) => {
   return (
@@ -9,16 +10,20 @@ const isKeyboardCodeAllowed = (code: string) => {
   );
 };
 
-const useTypings = ( enabled: boolean ) => {
+const useTypings = ( enabled: boolean, size: number ) => {
   const [cursor, setCursor] = useState(0);
   const [typed, setTyped] = useState<string>("");
+  const [words, setWords] = useState<string>(generateWords(size));
   const totalTyped = useRef(0);
+
+  const updateWords = useCallback(() => {
+    setWords(generateWords(size));
+  }, [size]);
 
   const keydownHandler = useCallback(({key, code}: KeyboardEvent) => {
     if (!enabled || !isKeyboardCodeAllowed(code)) {
       return;
     }
-
     switch (key) {
       case "Backspace":
         setTyped((prev) => prev.slice(0, -1));
@@ -50,7 +55,7 @@ const useTypings = ( enabled: boolean ) => {
     };
   }, [keydownHandler]);
 
-  return { typed, cursor, clearTyped, resetTotalTyped, totalTyped: totalTyped.current }
+  return { typed, cursor, words, clearTyped, resetTotalTyped, updateWords }
 };
 
 export default useTypings;

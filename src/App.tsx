@@ -8,8 +8,9 @@ import { calculateAccuracyPercentage } from "./utils/helpers";
 import { motion, MotionValue } from "framer-motion";
 
 const App = () => {
-  const {state, words, timeLeft, typed, errors, totalTyped, restart, setTextWindowSize} = useEngine();
+  console.log("new app created")
   const textWidthRef = useRef<HTMLDivElement>(null);
+  const {state, words, timeLeft, typed, errors, totalTyped, restart, setTextWindowSize} = useEngine();
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
@@ -18,10 +19,16 @@ const App = () => {
   };
 
   useEffect(() => {
-    textWidthResize();
-    window.addEventListener("resize", textWidthResize);
-    return () => window.removeEventListener("resize", textWidthResize);
+    if (textWidthRef.current) {
+      setTextWindowSize(textWidthRef.current.offsetWidth);
+    }
   });
+
+  // useEffect(() => {
+  //   textWidthResize();
+  //   window.addEventListener("resize", textWidthResize);
+  //   return () => window.removeEventListener("resize", textWidthResize);
+  // });
   if (state !== "finish") {
     return getPageDiv(
       <>
