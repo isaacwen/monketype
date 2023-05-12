@@ -9,9 +9,8 @@ export type State = "start" | "run" | "finish";
 const MAX_TEXT_WINDOW_SIZE = 1152;
 const COUNTDOWN_SECONDS = 30;
 
-const useEngine = () => {
+const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   const [state, setState] = useState<State>("start");
-  const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
   const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(COUNTDOWN_SECONDS);
   // const { currentRowTyped, cursor, currentRowWords, clearTyped, updateWords } = useTypings(state !== "finish", textWindowSize);
   const { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords } = useWords(textWindowSize);
@@ -61,11 +60,12 @@ const useEngine = () => {
     setState("start");
     setErrors(0);
     resetWords(textWindowSize);
+    console.log("window size: ", textWindowSize);
     // updateWords();
     // clearTyped();
   }, [resetWords, resetCountdown]);
 
-  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart, updateRows, setTextWindowSize };
+  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart, updateRows };
 }
 
 export default useEngine;

@@ -1,5 +1,5 @@
 import React from "react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import RestartButton from "./components/RestartButton";
 import Results from "./components/Results";
 import UserTypings from "./components/UserTypings";
@@ -7,24 +7,35 @@ import useEngine from "./hooks/useEngine";
 import { calculateAccuracyPercentage } from "./utils/helpers";
 import { motion, MotionValue } from "framer-motion";
 
+const MAX_TEXT_WINDOW_SIZE = 1152;
+
 const App = () => {
   const textWidthRef = useRef<HTMLDivElement>(null);
-  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart, updateRows, setTextWindowSize} = useEngine();
+  // const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
+  const textWindowSize = useRef<number>(MAX_TEXT_WINDOW_SIZE);
+  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart: restartMain, updateRows} = useEngine(textWindowSize);
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
-      setTextWindowSize(textWidthRef.current.offsetWidth);
-      updateRows(textWidthRef.current.offsetWidth);
+      textWindowSize.current = textWidthRef.current.offsetWidth;
+      // setTextWindowSize(textWidthRef.current.offsetWidth);
+      updateRows(textWindowSize);
     }
   };
 
+  const restart = () => {
+    textWidthResize();
+    console.log("expected width: ", textWidthRef.current?.offsetWidth);
+    console.log("actual width: ", textWindowSize.current);
+    restartMain();
+  }
+
   useEffect(() => {
     console.log("updating size")
-    if (textWidthRef.current) {
-      console.log(textWidthRef.current.offsetWidth)
-      setTextWindowSize(textWidthRef.current.offsetWidth);
+    if (textWidthRef.current && textWidthRef.current.offsetWidth !== textWindowSize.current) {
+      textWidthResize()
     }
-  });
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", textWidthResize);

@@ -15,7 +15,7 @@ const isKeyboardCodeAllowed = (code: string) => {
   );
 };
 
-const useWords = (windowSize: number) => {
+const useWords = (windowSize: React.MutableRefObject<number>) => {
   const [cursor, setCursor] = useState(0);
   const [allTyped, setAllTyped] = useState("");
   const [currentRowTyped, setCurrentRowTyped] = useState("");
@@ -27,8 +27,8 @@ const useWords = (windowSize: number) => {
   const [currentRowWords, setCurrentRowWords] = useState("");
   const [nextRowWords, setNextRowWords] = useState("");
 
-  const updateRows = useCallback((windowSize: number) => {
-    const maxCharsInRow = Math.floor(windowSize / CHAR_SIZE_PIXELS);
+  const updateRows = useCallback((windowSize: React.MutableRefObject<number>) => {
+    const maxCharsInRow = Math.floor(windowSize.current / CHAR_SIZE_PIXELS);
     console.log("windowSize: ", windowSize); //todo: remove
     console.log("maxCharsInRow: ", maxCharsInRow); // todo: remove
 
@@ -111,7 +111,7 @@ const useWords = (windowSize: number) => {
     };
   }, [keydownHandler]);
 
-  const resetWords = useCallback((windowSize: number) => {
+  const resetWords = useCallback((windowSize: React.MutableRefObject<number>) => {
     setCursor(0);
     setAllTyped("");
     setCurrentRowTyped("");
@@ -121,7 +121,7 @@ const useWords = (windowSize: number) => {
     setCurrentRowWords("");
     setNextRowWords("");
     updateRows(windowSize);
-  }, [])
+  }, []);
 
   return { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords }
 }
