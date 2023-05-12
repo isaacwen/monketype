@@ -6,7 +6,7 @@ import useWords from "./useWords";
 
 export type State = "start" | "run" | "finish";
 
-const COUNTDOWN_SECONDS = 5;
+const COUNTDOWN_SECONDS = 1;
 
 const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   const [state, setState] = useState<State>("start");

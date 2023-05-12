@@ -5,7 +5,7 @@ import Results from "./components/Results";
 import UserTypings from "./components/UserTypings";
 import useEngine from "./hooks/useEngine";
 import { calculateAccuracyPercentage } from "./utils/helpers";
-import { motion, MotionValue } from "framer-motion";
+import { AnimatePresence, motion, MotionValue } from "framer-motion";
 
 const MAX_TEXT_WINDOW_SIZE = 1152;
 
@@ -42,8 +42,56 @@ const App = () => {
     return () => window.removeEventListener("resize", textWidthResize);
   });
 
+  return (
+    <AnimatePresence mode = "popLayout">
+      {state !== "finish" && (
+        <motion.div
+          key = "typingPage"
+          // initial = {{opacity: 0}}
+          animate = {{opacity: 1}}
+          exit = {{opacity: 0, transition: {duration: 0.5}}}
+          transition = {{duration: 0.5, delay: 0.5}}
+        >
+          <div className = "max-w-6xl test" ref = {textWidthRef}>
+            <h2 className="text-primary-400 font-medium mx-7">Time: {timeLeft}</h2>
+            <div className = "relative mt-3 mx-7 text-3xl leading-relaxed break-normal" >
+              <div className="text-slate-500">{currentRowWords}</div>
+              <UserTypings className = "absolute inset-0" userInput = {currentRowTyped} words = {currentRowWords}/>
+              <div className="text-slate-500">{nextRowWords}</div>
+            </div>
+          </div>
+          <RestartButton
+            className = {"mx-auto mt-10 text-slate-500"}
+            onRestart = {restart}
+          />
+        </motion.div>
+      )}
+      {state === "finish" && (
+        <motion.div
+          key = "resultsPage"
+          // initial = {{opacity: 0}}
+          animate = {{opacity: 1}}
+          exit = {{opacity: 0, transition: {duration: 0.5}}}
+          transition = {{duration: 0.5, delay: 0.5}}
+        >
+          <div className = "test">
+            <Results
+              state = {state}
+              className = "mt-10"
+              stats = {getStats()}
+            />
+            <RestartButton
+              className = {"mx-auto mt-10 text-slate-500"}
+              onRestart = {restart}
+            />
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+
   if (state !== "finish") {
-    return getPageDiv(
+    return getPageDiv("typingPage",
       <>
         <div className = "max-w-6xl test" ref = {textWidthRef}>
           <h2 className="text-primary-400 font-medium mx-7">Time: {timeLeft}</h2>
@@ -60,7 +108,7 @@ const App = () => {
       </>
     );
   } else {
-    return getPageDiv(
+    return getPageDiv("resultsPage",
       <>
         <Results
           state = {state}
@@ -77,7 +125,7 @@ const App = () => {
   
 }
 
-const getPageDiv = (contents: React.ReactElement<any, string | React.JSXElementConstructor<any>>) => {
+const getPageDiv = (key: string, contents: React.ReactElement<any, string | React.JSXElementConstructor<any>>) => {
   return (
     <motion.div
       initial = {{opacity: 0}}
