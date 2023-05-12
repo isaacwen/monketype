@@ -21,3 +21,7 @@
   margin: auto;
   align-content: left;
 }
+
+.buttons {
+  max-width: 250px;
+}

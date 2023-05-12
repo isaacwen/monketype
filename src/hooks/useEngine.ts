@@ -5,11 +5,13 @@ import useTypings from "./useTypings";
 import useWords from "./useWords";
 
 export type State = "start" | "run" | "finish";
+export type Mode = "singleplayer" | "multiplayer";
 
-const COUNTDOWN_SECONDS = 1;
+const COUNTDOWN_SECONDS = 5;
 
 const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   const [state, setState] = useState<State>("start");
+  const [mode, setMode] = useState<Mode>("singleplayer");
   const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(COUNTDOWN_SECONDS);
   // const { currentRowTyped, cursor, currentRowWords, clearTyped, updateWords } = useTypings(state !== "finish", textWindowSize);
   const { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords, getStats: getStatsMain } = useWords(state !== "finish", textWindowSize);
@@ -42,7 +44,15 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
     console.log("window size: ", textWindowSize);
   }, [resetWords, resetCountdown]);
 
-  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart, updateRows };
+  const changeMode = useCallback(() => {
+    if (mode === "singleplayer") {
+      setMode("multiplayer");
+    } else {
+      setMode("singleplayer");
+    }
+  }, [mode, setMode])
+
+  return { state, mode, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart, changeMode, updateRows };
 }
 
 export default useEngine;

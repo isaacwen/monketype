@@ -2,10 +2,10 @@ import { useRef } from "react";
 import { MdRefresh } from "react-icons/md";
 
 const RestartButton = ({
-  onRestart: handleRestart,
+  handleRestart,
   className = "",
 }: {
-  onRestart: () => void;
+  handleRestart: () => void;
   className?: string;
 }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -19,10 +19,10 @@ const RestartButton = ({
     <button
       ref = { buttonRef }
       onClick = { handleClick }
-      className = {`block rounded px-8 py-2 bg-zinc-900 hover:bg-zinc-700 ${className}`}
+      className = {`block rounded px-8 py-2 hover:bg-zinc-700 ${className}`}
     >
-      Restart
-      {/* <MdRefresh className = "w-6 h-6"/> */}
+      <MdRefresh className = "w-6 h-6"/>
+      {/* {isHovering ? <>Restart</> : <MdRefresh className = "w-6 h-6"/>} */}
     </button>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef, useEffect, useState } from "react";
-import RestartButton from "./components/RestartButton";
+import ButtonRow from "./components/ButtonRow";
 import Results from "./components/Results";
 import UserTypings from "./components/UserTypings";
 import useEngine from "./hooks/useEngine";
@@ -13,7 +13,7 @@ const App = () => {
   const textWidthRef = useRef<HTMLDivElement>(null);
   // const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
   const textWindowSize = useRef<number>(MAX_TEXT_WINDOW_SIZE);
-  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart: restartMain, updateRows} = useEngine(textWindowSize);
+  const {state, mode, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart: restartMain, changeMode, updateRows} = useEngine(textWindowSize);
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
@@ -42,57 +42,57 @@ const App = () => {
     return () => window.removeEventListener("resize", textWidthResize);
   });
 
-  return (
-    <AnimatePresence mode = "popLayout">
-      {state !== "finish" && (
-        <motion.div
-          key = "typingPage"
-          // initial = {{opacity: 0}}
-          animate = {{opacity: 1}}
-          exit = {{opacity: 0, transition: {duration: 0.5}}}
-          transition = {{duration: 0.5, delay: 0.5}}
-        >
-          <div className = "max-w-6xl test" ref = {textWidthRef}>
-            <h2 className="text-primary-400 font-medium mx-7">Time: {timeLeft}</h2>
-            <div className = "relative mt-3 mx-7 text-3xl leading-relaxed break-normal" >
-              <div className="text-slate-500">{currentRowWords}</div>
-              <UserTypings className = "absolute inset-0" userInput = {currentRowTyped} words = {currentRowWords}/>
-              <div className="text-slate-500">{nextRowWords}</div>
-            </div>
-          </div>
-          <RestartButton
-            className = {"mx-auto mt-10 text-slate-500"}
-            onRestart = {restart}
-          />
-        </motion.div>
-      )}
-      {state === "finish" && (
-        <motion.div
-          key = "resultsPage"
-          // initial = {{opacity: 0}}
-          animate = {{opacity: 1}}
-          exit = {{opacity: 0, transition: {duration: 0.5}}}
-          transition = {{duration: 0.5, delay: 0.5}}
-        >
-          <div className = "test">
-            <Results
-              state = {state}
-              className = "mt-10"
-              stats = {getStats()}
-            />
-            <RestartButton
-              className = {"mx-auto mt-10 text-slate-500"}
-              onRestart = {restart}
-            />
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  )
+  // return (
+  //   <AnimatePresence mode = "popLayout">
+  //     {state !== "finish" && (
+  //       <motion.div
+  //         key = "typingPage"
+  //         // initial = {{opacity: 0}}
+  //         animate = {{opacity: 1}}
+  //         exit = {{opacity: 0, transition: {duration: 0.5}}}
+  //         transition = {{duration: 0.5, delay: 0.5}}
+  //       >
+  //         <div className = "max-w-6xl test" ref = {textWidthRef}>
+  //           <h2 className="text-primary-400 font-medium mx-7">Time: {timeLeft}</h2>
+  //           <div className = "relative mt-3 mx-7 text-3xl leading-relaxed break-normal" >
+  //             <div className="text-slate-500">{currentRowWords}</div>
+  //             <UserTypings className = "absolute inset-0" userInput = {currentRowTyped} words = {currentRowWords}/>
+  //             <div className="text-slate-500">{nextRowWords}</div>
+  //           </div>
+  //         </div>
+  //         <RestartButton
+  //           className = {"mx-auto mt-10 text-slate-500"}
+  //           onRestart = {restart}
+  //         />
+  //       </motion.div>
+  //     )}
+  //     {state === "finish" && (
+  //       <motion.div
+  //         key = "resultsPage"
+  //         // initial = {{opacity: 0}}
+  //         animate = {{opacity: 1}}
+  //         exit = {{opacity: 0, transition: {duration: 0.5}}}
+  //         transition = {{duration: 0.5, delay: 0.5}}
+  //       >
+  //         <div className = "test">
+  //           <Results
+  //             state = {state}
+  //             className = "mt-10"
+  //             stats = {getStats()}
+  //           />
+  //           <RestartButton
+  //             className = {"mx-auto mt-10 text-slate-500"}
+  //             onRestart = {restart}
+  //           />
+  //         </div>
+  //       </motion.div>
+  //     )}
+  //   </AnimatePresence>
+  // )
 
   if (state !== "finish") {
     return getPageDiv("typingPage",
-      <>
+      <div className = "content-center">
         <div className = "max-w-6xl test" ref = {textWidthRef}>
           <h2 className="text-primary-400 font-medium mx-7">Time: {timeLeft}</h2>
           <div className = "relative mt-3 mx-7 text-3xl leading-relaxed break-normal" >
@@ -101,11 +101,12 @@ const App = () => {
             <div className="text-slate-500">{nextRowWords}</div>
           </div>
         </div>
-        <RestartButton
-          className = {"mx-auto mt-10 text-slate-500"}
-          onRestart = {restart}
+        <ButtonRow
+          handleRestart = {restart}
+          mode = {mode}
+          changeMode = {changeMode}
         />
-      </>
+      </div>
     );
   } else {
     return getPageDiv("resultsPage",
@@ -115,9 +116,10 @@ const App = () => {
           className = "mt-10"
           stats = {getStats()}
         />
-        <RestartButton
-          className = {"mx-auto mt-10 text-slate-500"}
-          onRestart = {restart}
+        <ButtonRow
+          handleRestart = {restart}
+          mode = {mode}
+          changeMode = {changeMode}
         />
       </>
     );
