@@ -14,7 +14,7 @@ const useEngine = () => {
   const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
   const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(COUNTDOWN_SECONDS);
   // const { currentRowTyped, cursor, currentRowWords, clearTyped, updateWords } = useTypings(state !== "finish", textWindowSize);
-  const { currentRowTyped, currentRowWords, nextRowWords, cursor, resetWords } = useWords(textWindowSize);
+  const { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords } = useWords(textWindowSize);
 
   const totalTyped = 0;
   
@@ -65,7 +65,7 @@ const useEngine = () => {
     // clearTyped();
   }, [resetWords, resetCountdown]);
 
-  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart, setTextWindowSize };
+  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart, updateRows, setTextWindowSize };
 }
 
 export default useEngine;

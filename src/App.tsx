@@ -9,31 +9,34 @@ import { motion, MotionValue } from "framer-motion";
 
 const App = () => {
   const textWidthRef = useRef<HTMLDivElement>(null);
-  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart, setTextWindowSize} = useEngine();
+  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart, updateRows, setTextWindowSize} = useEngine();
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
       setTextWindowSize(textWidthRef.current.offsetWidth);
+      updateRows(textWidthRef.current.offsetWidth);
     }
   };
 
   useEffect(() => {
+    console.log("updating size")
     if (textWidthRef.current) {
+      console.log(textWidthRef.current.offsetWidth)
       setTextWindowSize(textWidthRef.current.offsetWidth);
     }
   });
 
-  // useEffect(() => {
-  //   textWidthResize();
-  //   window.addEventListener("resize", textWidthResize);
-  //   return () => window.removeEventListener("resize", textWidthResize);
-  // });
+  useEffect(() => {
+    window.addEventListener("resize", textWidthResize);
+    return () => window.removeEventListener("resize", textWidthResize);
+  });
+
   if (state !== "finish") {
     return getPageDiv(
       <>
-        <div className = "max-w-6xl test">
+        <div className = "max-w-6xl test" ref = {textWidthRef}>
           <h2 className="text-primary-400 font-medium mx-7">Time: {timeLeft}</h2>
-          <div className = "relative mt-3 mx-7 text-3xl leading-relaxed break-normal" ref = {textWidthRef}>
+          <div className = "relative mt-3 mx-7 text-3xl leading-relaxed break-normal" >
             <div className="text-slate-500">{currentRowWords}</div>
             <UserTypings className = "absolute inset-0" userInput = {currentRowTyped} words = {currentRowWords}/>
             <div className="text-slate-500">{nextRowWords}</div>

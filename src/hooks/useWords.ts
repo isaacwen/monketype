@@ -27,7 +27,7 @@ const useWords = (windowSize: number) => {
   const [currentRowWords, setCurrentRowWords] = useState("");
   const [nextRowWords, setNextRowWords] = useState("");
 
-  const updateRows = (windowSize: number) => {
+  const updateRows = useCallback((windowSize: number) => {
     const maxCharsInRow = Math.floor(windowSize / CHAR_SIZE_PIXELS);
     console.log("windowSize: ", windowSize); //todo: remove
     console.log("maxCharsInRow: ", maxCharsInRow); // todo: remove
@@ -70,12 +70,12 @@ const useWords = (windowSize: number) => {
       }
       return endIdx
     }
-    
+
     const firstRowEndIdx = getNextLineWords(currentWordIdx.current);
     const secondRowEndIdx = getNextLineWords(firstRowEndIdx);
     setCurrentRowWords(allWords.current.substring(currentWordIdx.current, firstRowEndIdx));
     setNextRowWords(allWords.current.substring(firstRowEndIdx, secondRowEndIdx));
-  }
+  }, [currentWordIdx, allWords, setCursor, cursor, currentRowTyped, setCurrentRowWords, setNextRowWords]);
 
   const finishedTypingRow = cursor >= currentRowWords.length;
   useEffect(() => {
@@ -123,7 +123,7 @@ const useWords = (windowSize: number) => {
     updateRows(windowSize);
   }, [])
 
-  return { currentRowTyped, currentRowWords, nextRowWords, cursor, resetWords }
+  return { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords }
 }
 
 export default useWords;
