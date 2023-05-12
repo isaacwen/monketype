@@ -6,24 +6,13 @@ import useWords from "./useWords";
 
 export type State = "start" | "run" | "finish";
 
-const MAX_TEXT_WINDOW_SIZE = 1152;
-const COUNTDOWN_SECONDS = 30;
+const COUNTDOWN_SECONDS = 5;
 
 const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   const [state, setState] = useState<State>("start");
   const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(COUNTDOWN_SECONDS);
   // const { currentRowTyped, cursor, currentRowWords, clearTyped, updateWords } = useTypings(state !== "finish", textWindowSize);
-  const { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords } = useWords(textWindowSize);
-
-  const totalTyped = 0;
-  
-
-  const [errors, setErrors] = useState(0);
-
-  const sumErrors = useCallback(() => {
-    const wordsReached = currentRowWords.substring(0, cursor);
-    setErrors((prevErrors) => prevErrors + countErrors(currentRowTyped, wordsReached));
-  }, [currentRowTyped, currentRowWords, cursor]);
+  const { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords, getStats: getStatsMain } = useWords(state !== "finish", textWindowSize);
 
   const isStarting = state === "start" && cursor > 0;
 
@@ -38,34 +27,22 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
     if (!timeLeft) {
       console.log("time is up...");
       setState("finish");
-      sumErrors();
     }
-  }, [timeLeft, sumErrors]);
+  }, [timeLeft]);
 
-  // const areWordsFinished = cursor === currentRowWords.length;
-
-  // useEffect(() => {
-  //   if (areWordsFinished) {
-  //     console.log("words are finished...");
-  //     sumErrors();
-  //     resetWords(textWindowSize);
-  //     // updateWords();
-  //     // clearTyped();
-  //   }
-  // }, [cursor, currentRowWords, areWordsFinished, resetWords, sumErrors]);
+  const getStats = useCallback(() => {
+    return getStatsMain(COUNTDOWN_SECONDS);
+  }, [getStatsMain]);
 
   const restart = useCallback(() => {
     console.log("restarting...");
     resetCountdown();
     setState("start");
-    setErrors(0);
     resetWords(textWindowSize);
     console.log("window size: ", textWindowSize);
-    // updateWords();
-    // clearTyped();
   }, [resetWords, resetCountdown]);
 
-  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart, updateRows };
+  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart, updateRows };
 }
 
 export default useEngine;

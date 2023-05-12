@@ -13,7 +13,7 @@ const App = () => {
   const textWidthRef = useRef<HTMLDivElement>(null);
   // const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
   const textWindowSize = useRef<number>(MAX_TEXT_WINDOW_SIZE);
-  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, errors, totalTyped, restart: restartMain, updateRows} = useEngine(textWindowSize);
+  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart: restartMain, updateRows} = useEngine(textWindowSize);
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
@@ -65,9 +65,7 @@ const App = () => {
         <Results
           state = {state}
           className = "mt-10"
-          errors = {errors}
-          accuracyPercentage = {calculateAccuracyPercentage(errors, totalTyped)}
-          total = {totalTyped}
+          stats = {getStats()}
         />
         <RestartButton
           className = {"mx-auto mt-10 text-slate-500"}

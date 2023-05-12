@@ -15,7 +15,7 @@ const isKeyboardCodeAllowed = (code: string) => {
   );
 };
 
-const useWords = (windowSize: React.MutableRefObject<number>) => {
+const useWords = (enabled: boolean, windowSize: React.MutableRefObject<number>) => {
   const [cursor, setCursor] = useState(0);
   const [allTyped, setAllTyped] = useState("");
   const [currentRowTyped, setCurrentRowTyped] = useState("");
@@ -26,6 +26,8 @@ const useWords = (windowSize: React.MutableRefObject<number>) => {
   // const [currentWordIdx, setCurrentWordIdx] = useState(0);
   const [currentRowWords, setCurrentRowWords] = useState("");
   const [nextRowWords, setNextRowWords] = useState("");
+  const correctInputs = useRef(0);
+  const incorrectInputs = useRef(0);
 
   const updateRows = useCallback((windowSize: React.MutableRefObject<number>) => {
     const maxCharsInRow = Math.floor(windowSize.current / CHAR_SIZE_PIXELS);
@@ -56,9 +58,9 @@ const useWords = (windowSize: React.MutableRefObject<number>) => {
     console.log("printing allwords:", allWords); // TODO remove
 
     const getNextLineWords = (startIdx: number) => {
-      var endIdx = startIdx;
+      let endIdx = startIdx;
       while (endIdx < allWords.current.length) {
-        var counter = 0;
+        let counter = 0;
         while (allWords.current[counter + endIdx] !== " ") {
           counter++;
         }
@@ -86,7 +88,7 @@ const useWords = (windowSize: React.MutableRefObject<number>) => {
   }, [finishedTypingRow, updateRows]);
 
   const keydownHandler = ({key, code}: KeyboardEvent) => {
-    if (!isKeyboardCodeAllowed(code)) {
+    if (!enabled || !isKeyboardCodeAllowed(code)) {
       return;
     }
     switch (key) {
@@ -98,6 +100,11 @@ const useWords = (windowSize: React.MutableRefObject<number>) => {
         }
         break;
       default:
+        if (currentRowWords[cursor] === key) {
+          correctInputs.current++;
+        } else {
+          incorrectInputs.current++;
+        }
         setAllTyped(allTyped.concat(key));
         setCurrentRowTyped(currentRowTyped.concat(key));
         setCursor(cursor + 1);
@@ -111,6 +118,50 @@ const useWords = (windowSize: React.MutableRefObject<number>) => {
     };
   }, [keydownHandler]);
 
+  const getStats = useCallback((runtimeSecs: number) => {
+    const accuracy = correctInputs.current / (incorrectInputs.current + correctInputs.current) * 100;
+    
+    let correctCharsInFullyCorrectWords = 0;
+    let correctCharsInAllWords = 0;
+    let incorrectWord = false;
+    let currentWordCorrectChars = 0;
+
+    const processChars = () => {
+      correctCharsInAllWords += currentWordCorrectChars;
+      if (!incorrectWord) {
+        correctCharsInFullyCorrectWords += currentWordCorrectChars;
+      }
+      incorrectWord = false;
+      currentWordCorrectChars = 0;
+    }
+    
+    for (let i = 0; i < allTyped.length; i++) {
+      if (allTyped[i] === allWords.current[i]) {
+        currentWordCorrectChars++;
+      } else {
+        incorrectWord = true;
+      }
+      if (allWords.current[i] === " ") {
+        processChars();
+      }
+    }
+    processChars();
+
+    console.log("correctCharsInAllWords: ", correctCharsInAllWords);
+    console.log("correctCharsInFullyCorrectWords: ", correctCharsInFullyCorrectWords);
+    console.log("currentWordCorrectChars: ", currentWordCorrectChars);
+
+    // per monkeytype: wpm is total amount of characters in the correctly typed
+    // words (including spaces), divided by 5 and normalized to 60 seconds. raw
+    // is the same was wpm except characters in incorrectly typed words are also
+    // counted.
+    const multiplier = 60 / runtimeSecs;
+    const wpm = correctCharsInFullyCorrectWords / 5 * multiplier;
+    const raw = correctCharsInAllWords / 5 * multiplier;
+    
+    return [accuracy, wpm, raw];
+  }, [correctInputs, incorrectInputs, allTyped, allWords]);
+
   const resetWords = useCallback((windowSize: React.MutableRefObject<number>) => {
     setCursor(0);
     setAllTyped("");
@@ -123,7 +174,7 @@ const useWords = (windowSize: React.MutableRefObject<number>) => {
     updateRows(windowSize);
   }, []);
 
-  return { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords }
+  return { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords, getStats }
 }
 
 export default useWords;
