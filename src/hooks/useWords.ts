@@ -171,6 +171,8 @@ const useWords = (enabled: boolean, windowSize: React.MutableRefObject<number>) 
     // setCurrentWordIdx(0);
     setCurrentRowWords("");
     setNextRowWords("");
+    correctInputs.current = 0;
+    incorrectInputs.current = 0;
     updateRows(windowSize);
   }, []);
 
