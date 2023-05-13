@@ -46,15 +46,15 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
     console.log("window size: ", textWindowSize);
   }, [resetWords, resetCountdown]);
 
-  const changeMode = useCallback(() => {
-    if (mode === "singleplayer") {
-      setMode("multiplayer");
-    } else {
-      setMode("singleplayer");
-    }
-  }, [mode, setMode])
+  // const changeMode = useCallback(() => {
+  //   if (mode === "singleplayer") {
+  //     setMode("multiplayer");
+  //   } else {
+  //     setMode("singleplayer");
+  //   }
+  // }, [mode, setMode])
 
-  return { state, mode, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart, changeMode, updateRows };
+  return { state, mode, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart, updateRows };
 }
 
 export default useEngine;

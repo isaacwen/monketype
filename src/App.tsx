@@ -13,7 +13,7 @@ const App = () => {
   const textWidthRef = useRef<HTMLDivElement>(null);
   // const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
   const textWindowSize = useRef<number>(MAX_TEXT_WINDOW_SIZE);
-  const {state, mode, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart: restartMain, changeMode, updateRows} = useEngine(textWindowSize);
+  const {state, mode, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart: restartMain, updateRows} = useEngine(textWindowSize);
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
@@ -29,6 +29,10 @@ const App = () => {
     console.log("actual width: ", textWindowSize.current);
     restartMain();
     navigate("/");
+  }
+
+  const changeMode = () => {
+    console.log("modechange");
   }
 
   useEffect(() => {
@@ -53,8 +57,7 @@ const App = () => {
           currentRowTyped={currentRowTyped}
           nextRowWords={nextRowWords}
           restart={restart}
-          mode={mode}
-          changeMode={changeMode}
+          modeChange={changeMode}
         />
       }></Route>
       <Route path="/results" element={state !== "finish" ? <Navigate to="/"/> :
@@ -62,10 +65,10 @@ const App = () => {
           state={state}
           getStats={getStats}
           restart={restart}
-          mode={mode}
-          changeMode={changeMode}
+          modeChange={changeMode}
         />
       }></Route>
+      <Route path="/room/:id" element={<></>}></Route>
     </Routes>
   )
 }

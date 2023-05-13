@@ -1,23 +1,23 @@
-import RestartButton from './RestartButton';
-import ModeButton from './ModeButton';
+import FlexButton from './FlexButton';
 
 const ButtonRow = ({
-  handleRestart, mode, changeMode
+  handleRestart, handleChangeMode, forSingleplayer
 }: {
   handleRestart: () => void;
-  mode: string;
-  changeMode: () => void;
+  handleChangeMode: () => void;
+  forSingleplayer: boolean;
 }) => {
   const BUTTON_STYLE = "mx-auto mt-10 text-slate-500";
   return (
   <div className="flex content-center buttons test">
-    <RestartButton
+    <FlexButton
+      handleClick = {handleRestart}
+      buttonName = {"restart"}
       className = {BUTTON_STYLE}
-      handleRestart = {handleRestart}
     />
-    <ModeButton
-      mode = {mode}
-      changeMode = {changeMode}
+    <FlexButton
+      handleClick = {handleChangeMode}
+      buttonName = {forSingleplayer ? "multiplayer" : "singleplayer"}
       className = {BUTTON_STYLE}
     />
   </div>)

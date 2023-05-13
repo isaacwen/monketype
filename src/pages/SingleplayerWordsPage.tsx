@@ -3,7 +3,7 @@ import ButtonRow from '../components/ButtonRow';
 import WordRows from '../components/WordRows';
 
 const SingleplayerWordsPage = ({
-  textWidthRef, timeLeft, currentRowWords, currentRowTyped, nextRowWords, restart, mode, changeMode
+  textWidthRef, timeLeft, currentRowWords, currentRowTyped, nextRowWords, restart, modeChange
 }: {
   textWidthRef: React.RefObject<HTMLDivElement>;
   timeLeft: number;
@@ -11,8 +11,7 @@ const SingleplayerWordsPage = ({
   currentRowTyped: string;
   nextRowWords: string;
   restart: () => void;
-  mode: string;
-  changeMode: () => void;
+  modeChange: () => void;
 }) => {
   return (
   <div className = "content-center">
@@ -25,8 +24,8 @@ const SingleplayerWordsPage = ({
     />
     <ButtonRow
       handleRestart = {restart}
-      mode = {mode}
-      changeMode = {changeMode}
+      handleChangeMode = {modeChange}
+      forSingleplayer = {true}
     />
   </div>
   )
