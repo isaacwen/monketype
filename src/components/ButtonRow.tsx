@@ -12,13 +12,13 @@ const ButtonRow = ({
   return (
   <div className="flex content-center buttons test">
     <RestartButton
-      className = {"mx-auto mt-10 text-slate-500"}
+      className = {BUTTON_STYLE}
       handleRestart = {handleRestart}
     />
     <ModeButton
       mode = {mode}
       changeMode = {changeMode}
-      className = {"mx-auto mt-10 text-slate-500"}
+      className = {BUTTON_STYLE}
     />
   </div>)
 }

@@ -4,8 +4,9 @@ import ButtonRow from "./components/ButtonRow";
 import Results from "./components/Results";
 import UserTypings from "./components/UserTypings";
 import useEngine from "./hooks/useEngine";
-import { calculateAccuracyPercentage } from "./utils/helpers";
 import { AnimatePresence, motion, MotionValue } from "framer-motion";
+import SingleplayerWordsPage from "./pages/SingleplayerWordsPage";
+import SingleplayerResultsPage from "./pages/SingleplayerResultsPage";
 
 const MAX_TEXT_WINDOW_SIZE = 1152;
 
@@ -33,7 +34,7 @@ const App = () => {
   useEffect(() => {
     console.log("updating size")
     if (textWidthRef.current && textWidthRef.current.offsetWidth !== textWindowSize.current) {
-      textWidthResize()
+      textWidthResize();
     }
   }, []);
 
@@ -91,40 +92,41 @@ const App = () => {
   // )
 
   if (state !== "finish") {
-    return getPageDiv("typingPage",
-      <div className = "content-center">
-        <div className = "max-w-6xl test" ref = {textWidthRef}>
-          <h2 className="text-primary-400 font-medium mx-7">Time: {timeLeft}</h2>
-          <div className = "relative mt-3 mx-7 text-3xl leading-relaxed break-normal" >
-            <div className="text-slate-500">{currentRowWords}</div>
-            <UserTypings className = "absolute inset-0" userInput = {currentRowTyped} words = {currentRowWords}/>
-            <div className="text-slate-500">{nextRowWords}</div>
-          </div>
-        </div>
-        <ButtonRow
-          handleRestart = {restart}
-          mode = {mode}
-          changeMode = {changeMode}
+    if (mode === "singleplayer") {
+      return (
+        <SingleplayerWordsPage
+          textWidthRef={textWidthRef}
+          timeLeft={timeLeft}
+          currentRowWords={currentRowWords}
+          currentRowTyped={currentRowTyped}
+          nextRowWords={nextRowWords}
+          restart={restart}
+          mode={mode}
+          changeMode={changeMode}
         />
-      </div>
-    );
+      );
+    } else {
+      return ( <></>
+      
+      );
+    }
   } else {
-    return getPageDiv("resultsPage",
-      <>
-        <Results
-          state = {state}
-          className = "mt-10"
-          stats = {getStats()}
+    if (mode === "singleplayer") {
+      return (
+        <SingleplayerResultsPage
+          state={state}
+          getStats={getStats}
+          restart={restart}
+          mode={mode}
+          changeMode={changeMode}
         />
-        <ButtonRow
-          handleRestart = {restart}
-          mode = {mode}
-          changeMode = {changeMode}
-        />
-      </>
-    );
+      );
+    } else {
+      return ( <></>
+
+      );
+    }
   }
-  
 }
 
 const getPageDiv = (key: string, contents: React.ReactElement<any, string | React.JSXElementConstructor<any>>) => {
