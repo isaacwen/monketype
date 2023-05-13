@@ -1,6 +1,6 @@
 import React from 'react'
 import ButtonRow from '../components/ButtonRow';
-import UserTypings from '../components/UserTypings';
+import WordRows from '../components/WordRows';
 
 const SingleplayerWordsPage = ({
   textWidthRef, timeLeft, currentRowWords, currentRowTyped, nextRowWords, restart, mode, changeMode
@@ -16,20 +16,19 @@ const SingleplayerWordsPage = ({
 }) => {
   return (
   <div className = "content-center">
-        <div className = "max-w-6xl test" ref = {textWidthRef}>
-          <h2 className="text-primary-400 font-medium mx-7">Time: {timeLeft}</h2>
-          <div className = "relative mt-3 mx-7 text-3xl leading-relaxed break-normal" >
-            <div className="text-slate-500">{currentRowWords}</div>
-            <UserTypings className = "absolute inset-0" userInput = {currentRowTyped} words = {currentRowWords}/>
-            <div className="text-slate-500">{nextRowWords}</div>
-          </div>
-        </div>
-        <ButtonRow
-          handleRestart = {restart}
-          mode = {mode}
-          changeMode = {changeMode}
-        />
-      </div>
+    <WordRows
+      textWidthRef={textWidthRef}
+      timeLeft={timeLeft}
+      currentRowWords={currentRowWords}
+      currentRowTyped={currentRowTyped}
+      nextRowWords={nextRowWords}
+    />
+    <ButtonRow
+      handleRestart = {restart}
+      mode = {mode}
+      changeMode = {changeMode}
+    />
+  </div>
   )
 }
 

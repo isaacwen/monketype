@@ -1,4 +1,5 @@
 import { useCallback, useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import useCountdownTimer from "./useCountdownTimer";
 import useTypings from "./useTypings";
 import useWords from "./useWords";
@@ -9,6 +10,7 @@ export type Mode = "singleplayer" | "multiplayer";
 const COUNTDOWN_SECONDS = 5;
 
 const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
+  const navigate = useNavigate();
   const [state, setState] = useState<State>("start");
   const [mode, setMode] = useState<Mode>("singleplayer");
   const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(COUNTDOWN_SECONDS);
@@ -28,6 +30,7 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
     if (!timeLeft) {
       console.log("time is up...");
       setState("finish");
+      navigate("/results");
     }
   }, [timeLeft]);
 
