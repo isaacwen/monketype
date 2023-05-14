@@ -1,8 +1,9 @@
 import { useRef } from 'react'
 import { MdRefresh } from 'react-icons/md';
-import { BsFillPersonFill, BsFillPeopleFill } from "react-icons/bs";
+import { BsFillPersonFill, BsFillPeopleFill, BsFillGearFill } from "react-icons/bs";
+import { RiArrowGoBackFill } from "react-icons/ri";
 
-export type ButtonTypes = "restart" | "singleplayer" | "multiplayer";
+export type ButtonTypes = "restart" | "profile" | "settings" | "back";
 
 const FlexButton = ({ handleClick: handleClickMain, buttonName, className = " "}: {handleClick: () => void; buttonName: ButtonTypes; className: string}) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -16,10 +17,12 @@ const FlexButton = ({ handleClick: handleClickMain, buttonName, className = " "}
     switch (buttonName) {
       case "restart":
         return <MdRefresh className={className}/>
-      case "singleplayer":
+      case "profile":
         return <BsFillPersonFill className={className}/>
+      case "settings":
+        return <BsFillGearFill className={className}/>
       default:
-        return <BsFillPeopleFill className={className}/>
+        return <RiArrowGoBackFill className={className}/>
     }
   }
 

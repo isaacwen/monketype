@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Times } from "./useEngine";
 
-const useCountdownTimer = (seconds: number) => {
-  const [timeLeft, setTimeLeft] = useState(seconds);
+const useCountdownTimer = (testTime: React.RefObject<Times>) => {
+  const [timeLeft, setTimeLeft] = useState(testTime.current ? testTime.current.valueOf() : 30);
   const intervalRef = useRef<NodeJS.Timer | null>(null);
 
   const startCountdown = useCallback(() => {
@@ -10,7 +11,7 @@ const useCountdownTimer = (seconds: number) => {
     intervalRef.current = setInterval(() => {
       setTimeLeft((timeLeft) => timeLeft - 1);
     }, 1000)
-  }, [setTimeLeft]);
+  }, [setTimeLeft, testTime.current]);
 
   const resetCountdown = useCallback(() => {
     console.log("resetting countdown...");
@@ -19,8 +20,8 @@ const useCountdownTimer = (seconds: number) => {
       clearInterval(intervalRef.current);
     }
     
-    setTimeLeft(seconds);
-  }, [seconds]);
+    setTimeLeft(testTime.current ? testTime.current.valueOf() : 30);
+  }, [testTime.current]);
 
   // when the countdown reaches 0, clear the countdown interval
   useEffect(() => {

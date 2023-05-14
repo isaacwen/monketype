@@ -2,11 +2,12 @@ import ButtonRow from "../components/ButtonRow";
 import { basePage } from "../utils/helpers";
 
 const MultiplayerRoomPage = ({
-  textWidthRef, restart, modeChange
+  textWidthRef, restart, navProfile, navSettings
 }: {
   textWidthRef: React.RefObject<HTMLDivElement>;
   restart: () => void;
-  modeChange: () => void;
+  navProfile: () => void;
+  navSettings: () => void;
 }) => {
   return (basePage(textWidthRef, 
     <>
@@ -15,13 +16,11 @@ const MultiplayerRoomPage = ({
       <input type="text" id="default-input" className="text-center min-w-max w-80 bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder = "Enter Existing Room Code"/>
       </div>
       <ButtonRow
-        handleRestart={restart}
-        handleChangeMode={modeChange}
-        forSingleplayer={false}
-        addRestart={false}
+        buttonNames={["restart", "profile", "settings"]}
+        buttonHandles={[restart, navProfile, navSettings]}
       />
     </>
-    ))
+  ));
 }
 
 export default MultiplayerRoomPage;

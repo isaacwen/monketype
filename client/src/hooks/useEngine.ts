@@ -5,15 +5,16 @@ import useCountdownTimer from "./useCountdownTimer";
 import useWords from "./useWords";
 
 export type State = "start" | "run" | "finish";
-
-const COUNTDOWN_SECONDS = 5;
+export const times = [15, 30, 60, 120] as const;
+export type Times = typeof times[number];
 
 const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   const navigate = useNavigate();
+  // const testTime = useRef<Times>(30);
+  const [testTime, setTestTime] = useState<Times>(30);
   const [state, setState] = useState<State>("start");
-  
   const [socket, setSocket] = useState<Socket>();
-  const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(COUNTDOWN_SECONDS);
+  const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(testTime);
   // const { currentRowTyped, cursor, currentRowWords, clearTyped, updateWords } = useTypings(state !== "finish", textWindowSize);
   const { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords, getStats: getStatsMain } = useWords(state !== "finish", textWindowSize);
 
@@ -32,9 +33,10 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   useEffect(() => {
     if (isStarting) {
       setState("run");
+      console.log(testTime);
       startCountdown();
     }
-  }, [isStarting, startCountdown, cursor]);
+  }, [isStarting, startCountdown, cursor, testTime]);
 
   useEffect(() => {
     if (!timeLeft) {
@@ -45,7 +47,7 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   }, [timeLeft]);
 
   const getStats = useCallback(() => {
-    return getStatsMain(COUNTDOWN_SECONDS);
+    return getStatsMain(testTime.current);
   }, [getStatsMain]);
 
   const restart = useCallback(() => {
@@ -75,7 +77,7 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
     })
   }
 
-  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart, updateRows, verifyRoom };
+  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart, updateRows, verifyRoom };
 }
 
 export default useEngine;

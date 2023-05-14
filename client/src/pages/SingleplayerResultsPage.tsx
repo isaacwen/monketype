@@ -4,12 +4,13 @@ import Results from '../components/Results';
 import { State } from '../hooks/useEngine';
 
 const SingleplayerResultsPage = ({
-  state, getStats, restart, modeChange
+  state, getStats, restart, navProfile, navSettings
 }: {
   state: State;
   getStats: () => number[];
   restart: () => void;
-  modeChange: () => void;
+  navProfile: () => void;
+  navSettings: () => void;
 }) => {
   return (
     <>
@@ -19,10 +20,8 @@ const SingleplayerResultsPage = ({
         stats = {getStats()}
       />
       <ButtonRow
-        handleRestart = {restart}
-        handleChangeMode = {modeChange}
-        forSingleplayer = {true}
-        addRestart = {true}
+        buttonNames={["restart", "profile", "settings"]}
+        buttonHandles={[restart, navProfile, navSettings]}
       />
     </>
   )

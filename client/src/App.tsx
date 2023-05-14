@@ -17,7 +17,7 @@ const App = () => {
   // const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
   const textWindowSize = useRef<number>(MAX_TEXT_WINDOW_SIZE);
   const [mode, setMode] = useState<Mode>("singleplayer");
-  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart: restartMain, updateRows, verifyRoom} = useEngine(textWindowSize);
+  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart: restartMain, updateRows, verifyRoom} = useEngine(textWindowSize);
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
@@ -46,6 +46,14 @@ const App = () => {
     }
   }
 
+  const navProfile = () => {
+    
+  }
+
+  const navSettings = () => {
+
+  }
+
   useEffect(() => {
     console.log("updating size")
     if (textWidthRef.current && textWidthRef.current.offsetWidth !== textWindowSize.current) {
@@ -67,8 +75,11 @@ const App = () => {
           currentRowWords={currentRowWords}
           currentRowTyped={currentRowTyped}
           nextRowWords={nextRowWords}
+          started={state === "run"}
+          testTime={testTime}
           restart={restart}
-          modeChange={changeMode}
+          navProfile={navProfile}
+          navSettings={navSettings}
         />
       }></Route>
       <Route path="/results" element={state !== "finish" ? <Navigate to="/"/> :
@@ -76,10 +87,11 @@ const App = () => {
           state={state}
           getStats={getStats}
           restart={restart}
-          modeChange={changeMode}
+          navProfile={navProfile}
+          navSettings={navSettings}
         />
       }></Route>
-      <Route path="/room/:id" element={
+      {/* <Route path="/room/:id" element={
         <MultiplayerWordsPage
           textWidthRef={textWidthRef}
           timeLeft={timeLeft}
@@ -87,7 +99,8 @@ const App = () => {
           currentRowTyped={currentRowTyped}
           nextRowWords={nextRowWords}
           restart={restart}
-          modeChange={changeMode}
+          navProfile={navProfile}
+          navSettings={navSettings}
           verifyRoom={verifyRoom}
         />
       }></Route>
@@ -95,9 +108,10 @@ const App = () => {
         <MultiplayerRoomPage
           textWidthRef={textWidthRef}
           restart={restart}
-          modeChange={changeMode}
+          navProfile={navProfile}
+          navSettings={navSettings}
         />
-      }></Route>
+      }></Route> */}
     </Routes>
   )
 }
