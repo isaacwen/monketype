@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* the base layer is for things that are applied to plain HTML elements */
+@layer base {
+  body {
+    @apply 
+    min-h-screen 
+    bg-zinc-800
+    grid
+    content-center
+    /*grid place-items-center /* these put all the text in a grid and then center them */
+    font-mono
+    px-4 /* this helps the display in smaller screens */
+    ;
+  }
+}
+
+.test {
+  margin: auto;
+  align-content: left;
+}
+
+.buttons {
+  max-width: 250px;
+}
