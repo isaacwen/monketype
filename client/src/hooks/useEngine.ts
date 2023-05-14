@@ -13,22 +13,11 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   // const testTime = useRef<Times>(30);
   const [testTime, setTestTime] = useState<Times>(30);
   const [state, setState] = useState<State>("start");
-  const [socket, setSocket] = useState<Socket>();
   const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(testTime);
   // const { currentRowTyped, cursor, currentRowWords, clearTyped, updateWords } = useTypings(state !== "finish", textWindowSize);
   const { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords, getStats: getStatsMain } = useWords(state !== "finish", textWindowSize);
 
   const isStarting = state === "start" && cursor > 0;
-
-  useEffect(() => {
-    const s = io("http://localhost:3001");
-    console.log("receiving socket", s);
-    setSocket(s);
-
-    return () => {
-      s.disconnect();
-    }
-  }, []);
 
   useEffect(() => {
     if (isStarting) {
@@ -66,18 +55,7 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   //   }
   // }, [mode, setMode])
 
-  const verifyRoom = async (id: string) => {
-    console.log("socket", socket);
-    socket?.emit("check-room-exists", id);
-    socket?.on("check-room-exists-response", (exists: boolean) => {
-      console.log("room ", id, " exists: ", exists)
-      if (!exists) {
-        navigate("/");
-      }
-    })
-  }
-
-  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart, updateRows, verifyRoom, setTestTime };
+  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart, updateRows, setTestTime };
 }
 
 export default useEngine;

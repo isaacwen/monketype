@@ -5,8 +5,6 @@ import useEngine from "./hooks/useEngine";
 import { AnimatePresence, motion, MotionValue } from "framer-motion";
 import SingleplayerWordsPage from "./pages/SingleplayerWordsPage";
 import SingleplayerResultsPage from "./pages/SingleplayerResultsPage";
-import MultiplayerWordsPage from "./pages/MultiplayerWordsPage";
-import MultiplayerRoomPage from "./pages/MultiplayerRoomPage";
 
 export type Mode = "singleplayer" | "multiplayer";
 const MAX_TEXT_WINDOW_SIZE = 1152;
@@ -17,7 +15,7 @@ const App = () => {
   // const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
   const textWindowSize = useRef<number>(MAX_TEXT_WINDOW_SIZE);
   const [mode, setMode] = useState<Mode>("singleplayer");
-  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart: restartMain, updateRows, verifyRoom, setTestTime} = useEngine(textWindowSize);
+  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart: restartMain, updateRows, setTestTime} = useEngine(textWindowSize);
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
@@ -92,27 +90,6 @@ const App = () => {
           navSettings={navSettings}
         />
       }></Route>
-      {/* <Route path="/room/:id" element={
-        <MultiplayerWordsPage
-          textWidthRef={textWidthRef}
-          timeLeft={timeLeft}
-          currentRowWords={currentRowWords}
-          currentRowTyped={currentRowTyped}
-          nextRowWords={nextRowWords}
-          restart={restart}
-          navProfile={navProfile}
-          navSettings={navSettings}
-          verifyRoom={verifyRoom}
-        />
-      }></Route>
-      <Route path="/mp" element={
-        <MultiplayerRoomPage
-          textWidthRef={textWidthRef}
-          restart={restart}
-          navProfile={navProfile}
-          navSettings={navSettings}
-        />
-      }></Route> */}
     </Routes>
   )
 }
