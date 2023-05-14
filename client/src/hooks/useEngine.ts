@@ -34,7 +34,7 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
     if (isStarting) {
       setState("run");
       console.log(testTime);
-      startCountdown();
+      startCountdown(testTime);
     }
   }, [isStarting, startCountdown, cursor, testTime]);
 
@@ -47,12 +47,12 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   }, [timeLeft]);
 
   const getStats = useCallback(() => {
-    return getStatsMain(testTime.current);
+    return getStatsMain(testTime);
   }, [getStatsMain]);
 
   const restart = useCallback(() => {
     console.log("restarting...");
-    resetCountdown();
+    resetCountdown(testTime);
     setState("start");
     resetWords(textWindowSize);
     console.log("window size: ", textWindowSize);
@@ -77,7 +77,7 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
     })
   }
 
-  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart, updateRows, verifyRoom };
+  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart, updateRows, verifyRoom, setTestTime };
 }
 
 export default useEngine;

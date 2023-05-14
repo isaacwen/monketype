@@ -1,3 +1,7 @@
+const mongoose = require('mongoose')
+require('dotenv').config({path:'./.env.local'})
+mongoose.connect(process.env.REACT_APP_MONGO_DB_URI)
+
 const io = require('socket.io')(3001, {
   cors: {
     origin: 'http://localhost:3000',

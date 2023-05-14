@@ -6,7 +6,7 @@ import { Times } from '../hooks/useEngine';
 import { basePage } from '../utils/helpers';
 
 const SingleplayerWordsPage = ({
-  textWidthRef, timeLeft, currentRowWords, currentRowTyped, nextRowWords, started, testTime, restart, navProfile, navSettings
+  textWidthRef, timeLeft, currentRowWords, currentRowTyped, nextRowWords, started, testTime, restart, navProfile, navSettings, setTestTime
 }: {
   textWidthRef: React.RefObject<HTMLDivElement>;
   timeLeft: number;
@@ -14,14 +14,15 @@ const SingleplayerWordsPage = ({
   currentRowTyped: string;
   nextRowWords: string;
   started: boolean;
-  testTime: React.MutableRefObject<Times>
+  testTime: number
   restart: () => void;
   navProfile: () => void;
   navSettings: () => void;
+  setTestTime: Dispatch<SetStateAction<Times>>;
 }) => {
   return (basePage(textWidthRef,
     <>
-      <Timer timeLeft = {timeLeft} started = {started} testTime = {testTime}/>
+      <Timer timeLeft = {timeLeft} started = {started} testTime = {testTime} setTestTime = {setTestTime}/>
       <WordRows
         currentRowWords={currentRowWords}
         currentRowTyped={currentRowTyped}

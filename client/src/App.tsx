@@ -17,7 +17,7 @@ const App = () => {
   // const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
   const textWindowSize = useRef<number>(MAX_TEXT_WINDOW_SIZE);
   const [mode, setMode] = useState<Mode>("singleplayer");
-  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart: restartMain, updateRows, verifyRoom} = useEngine(textWindowSize);
+  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart: restartMain, updateRows, verifyRoom, setTestTime} = useEngine(textWindowSize);
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
@@ -80,6 +80,7 @@ const App = () => {
           restart={restart}
           navProfile={navProfile}
           navSettings={navSettings}
+          setTestTime={setTestTime}
         />
       }></Route>
       <Route path="/results" element={state !== "finish" ? <Navigate to="/"/> :

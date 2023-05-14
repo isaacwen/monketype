@@ -2,17 +2,19 @@ import { Dispatch, SetStateAction, useRef } from "react";
 import { times, Times } from "../hooks/useEngine";
 
 const Timer = ({
-  timeLeft, started, testTime
+  timeLeft, started, testTime, setTestTime
 }: {
   timeLeft: number;
   started: boolean;
-  testTime: React.MutableRefObject<Times>;
+  testTime: number;
+  setTestTime: Dispatch<SetStateAction<Times>>;
 }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   
   const handleClick = (time: Times) => {
     console.log("time:", time);
-    testTime.current = time;
+    testTime = time;
+    setTestTime(time);
   };
 
   const timeButtons: JSX.Element[] = [];
@@ -22,7 +24,7 @@ const Timer = ({
       <button
           ref={buttonRef}
           onClick={() => handleClick(time)}
-          className = {'block rounded hover:text-white'}
+          className = {`block rounded hover:font-extrabold hover:underline ${testTime === time? "text-white" : "text-primary-400"}`}
       >{time}</button>
     )
   });
@@ -33,7 +35,8 @@ const Timer = ({
     );
   } else {
     return (
-      <div className = {"flex text-xl font-medium text-primary-400"}>
+      <div className = {"flex text-xl font-medium text-primary-400 gap-6 mx-7"}>
+        <h2 className="text-primary-400 text-xl font-medium">Timer: </h2>
         {timeButtons}
       </div>
     )
