@@ -5,6 +5,8 @@ const io = require('socket.io')(3001, {
   }
 })
 
-io.on("connection", socket => {
-  
+io.on("connection", (socket) => {
+  socket.on("check-room-exists", async (roomId) => {
+    socket.emit("check-room-exists-response", io.sockets.adapter.rooms[roomId])
+  });
 })

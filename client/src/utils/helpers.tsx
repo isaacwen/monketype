@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 const CHAR_SIZE_PIXELS = 19;
 var randomWords = require('random-words');
 
@@ -10,3 +12,11 @@ export const generateWords = (size: number) => {
   words += " ";
   return words;
 };
+
+export const basePage = (textWidthRef: React.RefObject<HTMLDivElement>, contents: ReactElement, className: string = "") => {
+  return (
+    <div className = {"max-w-6xl test content-center " + className} ref = {textWidthRef}>
+      {contents}
+    </div>
+  )
+}

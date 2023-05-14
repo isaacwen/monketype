@@ -22,6 +22,7 @@ const SingleplayerResultsPage = ({
         handleRestart = {restart}
         handleChangeMode = {modeChange}
         forSingleplayer = {true}
+        addRestart = {true}
       />
     </>
   )

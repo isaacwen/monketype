@@ -1,23 +1,33 @@
 import { useCallback, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { io, Socket } from "socket.io-client";
 import useCountdownTimer from "./useCountdownTimer";
-import useTypings from "./useTypings";
 import useWords from "./useWords";
 
 export type State = "start" | "run" | "finish";
-export type Mode = "singleplayer" | "multiplayer";
 
 const COUNTDOWN_SECONDS = 5;
 
 const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   const navigate = useNavigate();
   const [state, setState] = useState<State>("start");
-  const [mode, setMode] = useState<Mode>("singleplayer");
+  
+  const [socket, setSocket] = useState<Socket>();
   const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(COUNTDOWN_SECONDS);
   // const { currentRowTyped, cursor, currentRowWords, clearTyped, updateWords } = useTypings(state !== "finish", textWindowSize);
   const { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords, getStats: getStatsMain } = useWords(state !== "finish", textWindowSize);
 
   const isStarting = state === "start" && cursor > 0;
+
+  useEffect(() => {
+    const s = io("http://localhost:3001");
+    console.log("receiving socket", s);
+    setSocket(s);
+
+    return () => {
+      s.disconnect();
+    }
+  }, []);
 
   useEffect(() => {
     if (isStarting) {
@@ -54,7 +64,18 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   //   }
   // }, [mode, setMode])
 
-  return { state, mode, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart, updateRows };
+  const verifyRoom = async (id: string) => {
+    console.log("socket", socket);
+    socket?.emit("check-room-exists", id);
+    socket?.on("check-room-exists-response", (exists: boolean) => {
+      console.log("room ", id, " exists: ", exists)
+      if (!exists) {
+        navigate("/");
+      }
+    })
+  }
+
+  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, getStats, restart, updateRows, verifyRoom };
 }
 
 export default useEngine;
