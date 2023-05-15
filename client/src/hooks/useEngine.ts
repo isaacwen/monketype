@@ -1,6 +1,5 @@
 import { useCallback, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { io, Socket } from "socket.io-client";
 import useCountdownTimer from "./useCountdownTimer";
 import useWords from "./useWords";
 

@@ -22,6 +22,7 @@ const Timer = ({
   times.forEach((time: Times) => {
     timeButtons.push(
       <button
+          key={`button${time}`}
           ref={buttonRef}
           onClick={() => handleClick(time)}
           className = {`block rounded hover:font-extrabold hover:underline ${testTime === time? "text-white" : "text-primary-400"}`}
