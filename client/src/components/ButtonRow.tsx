@@ -12,6 +12,7 @@ const ButtonRow = ({
   for (let i = 0; i < buttonNames.length; i++) {
     buttons.push(
       <FlexButton
+        key = {buttonNames[i]}
         handleClick = {buttonHandles[i]}
         buttonName = {buttonNames[i]}
         className = {BUTTON_STYLE}

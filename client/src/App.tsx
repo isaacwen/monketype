@@ -6,6 +6,7 @@ import { AnimatePresence, motion, MotionValue } from "framer-motion";
 import SingleplayerWordsPage from "./pages/SingleplayerWordsPage";
 import SingleplayerResultsPage from "./pages/SingleplayerResultsPage";
 import SignInPage from "./pages/SignInPage";
+import StatsPage from "./pages/StatsPage";
 
 export type Mode = "singleplayer" | "multiplayer";
 const MAX_TEXT_WINDOW_SIZE = 1152;
@@ -96,6 +97,12 @@ const App = () => {
       }></Route>
       <Route path="/login" element={
         <SignInPage
+          user={user}
+          navBack={navBack}
+        />
+      }></Route>
+      <Route path="/stats" element={
+        <StatsPage
           user={user}
           navBack={navBack}
         />
