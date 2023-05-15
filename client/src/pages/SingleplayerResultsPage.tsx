@@ -1,16 +1,14 @@
-import React from 'react'
 import ButtonRow from '../components/ButtonRow';
 import Results from '../components/Results';
 import { State } from '../hooks/useEngine';
 
 const SingleplayerResultsPage = ({
-  state, getStats, restart, navProfile, navSettings
+  state, getStats, restart, navProfile
 }: {
   state: State;
   getStats: () => number[];
   restart: () => void;
   navProfile: () => void;
-  navSettings: () => void;
 }) => {
   return (
     <>
@@ -20,8 +18,8 @@ const SingleplayerResultsPage = ({
         stats = {getStats()}
       />
       <ButtonRow
-        buttonNames={["restart", "profile", "settings"]}
-        buttonHandles={[restart, navProfile, navSettings]}
+        buttonNames={["restart", "profile"]}
+        buttonHandles={[restart, navProfile]}
       />
     </>
   )

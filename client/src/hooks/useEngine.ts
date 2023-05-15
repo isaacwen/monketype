@@ -13,6 +13,7 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   // const testTime = useRef<Times>(30);
   const [testTime, setTestTime] = useState<Times>(30);
   const [state, setState] = useState<State>("start");
+  const [user, setUser] = useState<string | null>(null);
   const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(testTime);
   // const { currentRowTyped, cursor, currentRowWords, clearTyped, updateWords } = useTypings(state !== "finish", textWindowSize);
   const { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords, getStats: getStatsMain } = useWords(state !== "finish", textWindowSize);
@@ -55,7 +56,7 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>) => {
   //   }
   // }, [mode, setMode])
 
-  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart, updateRows, setTestTime };
+  return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, user, getStats, restart, updateRows, setTestTime };
 }
 
 export default useEngine;

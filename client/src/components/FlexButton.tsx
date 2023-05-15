@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { MdRefresh } from 'react-icons/md';
-import { BsFillPersonFill, BsFillPeopleFill, BsFillGearFill } from "react-icons/bs";
-import { RiArrowGoBackFill } from "react-icons/ri";
+import { BsFillPersonFill, BsFillGearFill } from "react-icons/bs";
+import { BiArrowBack } from "react-icons/bi";
 
 export type ButtonTypes = "restart" | "profile" | "settings" | "back";
 
@@ -22,7 +22,7 @@ const FlexButton = ({ handleClick: handleClickMain, buttonName, className = " "}
       case "settings":
         return <BsFillGearFill className={className}/>
       default:
-        return <RiArrowGoBackFill className={className}/>
+        return <BiArrowBack className={className}/>
     }
   }
 
