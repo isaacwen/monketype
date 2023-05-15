@@ -7,13 +7,13 @@ const UserSchema = new mongoose.Schema({
   username: {type: String, required: true, index: {unique: true}},
   password: {type: String, required: true},
   completedTests: {type: Number, default: 0},
-  avgWPM: {type: Number, default: 0},
-  avgRaw: {type: Number, default: 0},
-  avgAcc: {type: Number, default: 0},
-  bestWPM15: {type: Number, default: 0},
-  bestWPM30: {type: Number, default: 0},
-  bestWPM60: {type: Number, default: 0},
-  bestWPM120: {type: Number, default: 0}
+  avgWPM: {type: Number, default: -1},
+  avgRaw: {type: Number, default: -1},
+  avgAcc: {type: Number, default: -1},
+  bestWPM15: {type: Number, default: -1},
+  bestWPM30: {type: Number, default: -1},
+  bestWPM60: {type: Number, default: -1},
+  bestWPM120: {type: Number, default: -1}
 });
 
 UserSchema.pre("save", (next) => {

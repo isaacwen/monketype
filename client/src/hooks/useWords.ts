@@ -88,7 +88,7 @@ const useWords = (enabled: boolean, windowSize: React.MutableRefObject<number>) 
   }, [finishedTypingRow, updateRows]);
 
   const keydownHandler = ({key, code}: KeyboardEvent) => {
-    if (!enabled || !isKeyboardCodeAllowed(code)) {
+    if (!enabled || !isKeyboardCodeAllowed(code) || window.location.pathname != "/") {
       return;
     }
     switch (key) {
