@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/api";
 import User from "../api/User";
 import ButtonRow from "../components/ButtonRow";
+import { pageWrapper } from "../utils/helpers";
 
 const StatsPage = ({
   user, className, navBack, signOut
@@ -20,7 +21,7 @@ const StatsPage = ({
     console.log(userStats);
   }, [user, setUserStats]);
 
-  return (
+  return (pageWrapper(
     <div className="flex min-h-full flex-col justify-center test px-6 lg:px-8 max-w-6xl items-center text-primary-400 space-y-3 py-10">
       {userStats ? (
         <>
@@ -46,7 +47,7 @@ const StatsPage = ({
       />
     </div>
     
-  )
+  ))
 }
 
 const displayValue = (num: number, addPercentage: boolean = false) => {

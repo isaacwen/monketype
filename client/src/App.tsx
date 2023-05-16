@@ -80,57 +80,46 @@ const App = () => {
   });
 
   return (
-    <Routes>
-      <Route path="/" element={
-        <SingleplayerWordsPage
-          textWidthRef={textWidthRef}
-          timeLeft={timeLeft}
-          currentRowWords={currentRowWords}
-          currentRowTyped={currentRowTyped}
-          nextRowWords={nextRowWords}
-          started={state === "run"}
-          testTime={testTime}
-          restart={restart}
-          navProfile={navProfile}
-          setTestTime={setTestTime}
-        />
-      }></Route>
-      <Route path="/results" element={state !== "finish" ? <Navigate to="/"/> :
-        <SingleplayerResultsPage
-          state={state}
-          getStats={getStats}
-          restart={restart}
-          navProfile={navProfile}
-        />
-      }></Route>
-      <Route path="/login" element={
-        <SignInPage
-          setUser={setUser}
-          navBack={navBack}
-        />
-      }></Route>
-      <Route path="/stats" element={user === "" ? <Navigate to="../login"/> :
-        <StatsPage
-          user={user}
-          className="mt-10"
-          navBack={navBack}
-          signOut={signOut}
-        />
-      }></Route>
-    </Routes>
-  )
-}
-
-const getPageDiv = (key: string, contents: React.ReactElement<any, string | React.JSXElementConstructor<any>>) => {
-  return (
-    <motion.div
-      initial = {{opacity: 0}}
-      animate = {{opacity: 1}}
-      exit = {{opacity: 0}}
-      transition = {{duration: 3}}
-    >
-      {contents}
-    </motion.div>
+    <AnimatePresence>
+      <Routes>
+        <Route path="/" element={
+          <SingleplayerWordsPage
+            textWidthRef={textWidthRef}
+            timeLeft={timeLeft}
+            currentRowWords={currentRowWords}
+            currentRowTyped={currentRowTyped}
+            nextRowWords={nextRowWords}
+            started={state === "run"}
+            testTime={testTime}
+            restart={restart}
+            navProfile={navProfile}
+            setTestTime={setTestTime}
+          />
+        }></Route>
+        <Route path="/results" element={state !== "finish" ? <Navigate to="/"/> :
+          <SingleplayerResultsPage
+            state={state}
+            getStats={getStats}
+            restart={restart}
+            navProfile={navProfile}
+          />
+        }></Route>
+        <Route path="/login" element={
+          <SignInPage
+            setUser={setUser}
+            navBack={navBack}
+          />
+        }></Route>
+        <Route path="/stats" element={user === "" ? <Navigate to="../login"/> :
+          <StatsPage
+            user={user}
+            className="mt-10"
+            navBack={navBack}
+            signOut={signOut}
+          />
+        }></Route>
+      </Routes>
+    </AnimatePresence>
   )
 }
 

@@ -3,6 +3,7 @@ import { SHA256, enc } from "crypto-js";
 import ButtonRow from "../components/ButtonRow";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { pageWrapper } from "../utils/helpers";
 
 const SignInPage = ({
   setUser, navBack
@@ -44,7 +45,7 @@ const SignInPage = ({
     }
   }
 
-  return (
+  return (pageWrapper(
     <>
       <div className="flex min-h-full flex-col justify-center px-6 lg:px-8">
         <h2 className="text-primary-400 text-xl font-medium text-center">Sign in to save test results</h2>
@@ -68,7 +69,7 @@ const SignInPage = ({
       </div>
       
     </>
-  )
+  ))
 }
 
 const hash = (s: string) => {

@@ -3,7 +3,7 @@ import ButtonRow from '../components/ButtonRow';
 import Timer from '../components/Timer';
 import WordRows from '../components/WordRows';
 import { Times } from '../hooks/useEngine';
-import { basePage } from '../utils/helpers';
+import { basePage, pageWrapper } from '../utils/helpers';
 
 const SingleplayerWordsPage = ({
   textWidthRef, timeLeft, currentRowWords, currentRowTyped, nextRowWords, started, testTime, restart, navProfile, setTestTime
@@ -19,7 +19,7 @@ const SingleplayerWordsPage = ({
   navProfile: () => void;
   setTestTime: Dispatch<SetStateAction<Times>>;
 }) => {
-  return (basePage(textWidthRef,
+  return (pageWrapper(basePage(textWidthRef,
     <>
       <Timer timeLeft = {timeLeft} started = {started} testTime = {testTime} setTestTime = {setTestTime}/>
       <WordRows
@@ -32,7 +32,7 @@ const SingleplayerWordsPage = ({
         buttonHandles={[restart, navProfile]}
       />
     </>
-  ))
+  )))
 }
 
 export default SingleplayerWordsPage;

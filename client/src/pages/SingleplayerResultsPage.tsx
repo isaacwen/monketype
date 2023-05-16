@@ -1,6 +1,7 @@
 import ButtonRow from '../components/ButtonRow';
 import Results from '../components/Results';
 import { State } from '../hooks/useEngine';
+import { pageWrapper } from '../utils/helpers';
 
 const SingleplayerResultsPage = ({
   state, getStats, restart, navProfile
@@ -10,7 +11,7 @@ const SingleplayerResultsPage = ({
   restart: () => void;
   navProfile: () => void;
 }) => {
-  return (
+  return (pageWrapper(
     <>
       <Results
         state = {state}
@@ -22,7 +23,7 @@ const SingleplayerResultsPage = ({
         buttonHandles={[restart, navProfile]}
       />
     </>
-  )
+  ))
 }
 
 export default SingleplayerResultsPage
