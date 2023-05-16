@@ -7,7 +7,7 @@ const db = require("./db");
 const userRouter = require("./routes/user-router");
 
 const app = express();
-const apiPort = 3001;
+const apiPort = process.env.PORT;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
