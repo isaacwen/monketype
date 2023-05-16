@@ -1,24 +1,23 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { SHA256, enc } from "crypto-js";
 import ButtonRow from "../components/ButtonRow";
 import api from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 const SignInPage = ({
-  user, navBack
+  setUser, navBack
 }: {
-  user: string | null;
+  setUser: Dispatch<SetStateAction<string>>;
   navBack: () => void;
 }) => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate();
   const [signingIn, setSigningIn] = useState(true);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
-
-  const changeVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  }
+  // const showErrorMessage = useRef(false);
 
   const changeSigningIn = () => {
     setSigningIn(!signingIn);
+    // showErrorMessage.current = false;
     setShowErrorMessage(false);
   }
 
@@ -28,16 +27,20 @@ const SignInPage = ({
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+    const username = (event.target as HTMLFormElement).username.value;
+    const password = hash((event.target as HTMLFormElement).password.value);
+    let validSignIn = false;
     if (signingIn) {
-      await api.verifyUser({
-        username: (event.target as HTMLFormElement).username.value,
-        password: hash((event.target as HTMLFormElement).password.value)
-      }, setShowErrorMessage);
+      validSignIn = await api.verifyUser({username: username, password: password});
     } else {
-      await api.addUser({
-        username: (event.target as HTMLFormElement).username.value,
-        password: hash((event.target as HTMLFormElement).password.value)
-      }, setShowErrorMessage);
+      validSignIn = await api.addUser({username: username, password: password});
+    }
+    if (validSignIn) {
+      setShowErrorMessage(false);
+      setUser(username);
+      navigate("/stats");
+    } else {
+      setShowErrorMessage(true);
     }
   }
 

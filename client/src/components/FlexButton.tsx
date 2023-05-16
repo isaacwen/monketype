@@ -2,8 +2,9 @@ import { useRef } from 'react'
 import { MdRefresh } from 'react-icons/md';
 import { BsFillPersonFill, BsFillGearFill } from "react-icons/bs";
 import { BiArrowBack } from "react-icons/bi";
+import { RxExit } from "react-icons/rx";
 
-export type ButtonTypes = "restart" | "profile" | "settings" | "back";
+export type ButtonTypes = "restart" | "profile" | "settings" | "back" | "sign out";
 
 const FlexButton = ({ handleClick: handleClickMain, buttonName, className = " "}: {handleClick: () => void; buttonName: ButtonTypes; className: string}) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -21,8 +22,10 @@ const FlexButton = ({ handleClick: handleClickMain, buttonName, className = " "}
         return <BsFillPersonFill className={className}/>
       case "settings":
         return <BsFillGearFill className={className}/>
-      default:
+      case "back":
         return <BiArrowBack className={className}/>
+      default:
+        return <RxExit className={className}/>
     }
   }
 

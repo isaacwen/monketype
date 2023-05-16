@@ -17,7 +17,8 @@ const App = () => {
   // const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
   const textWindowSize = useRef<number>(MAX_TEXT_WINDOW_SIZE);
   const [mode, setMode] = useState<Mode>("singleplayer");
-  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, user, getStats, restart: restartMain, updateRows, setTestTime} = useEngine(textWindowSize);
+  const [user, setUser] = useState<string>("");
+  const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart: restartMain, updateRows, setTestTime} = useEngine(textWindowSize, user);
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
@@ -47,16 +48,23 @@ const App = () => {
   }
 
   const navProfile = () => {
-    navigate("/login");
-  }
-
-  const navSettings = () => {
-
+    restartMain();
+    if (user) {
+      navigate("/stats");
+    } else {
+      navigate("/login");
+    }
   }
 
   const navBack = () => {
     restartMain();
     navigate("/");
+  }
+
+  const signOut = () => {
+    restartMain();
+    setUser("");
+    navigate("/login");
   }
 
   useEffect(() => {
@@ -97,14 +105,16 @@ const App = () => {
       }></Route>
       <Route path="/login" element={
         <SignInPage
-          user={user}
+          setUser={setUser}
           navBack={navBack}
         />
       }></Route>
-      <Route path="/stats" element={
+      <Route path="/stats" element={user === "" ? <Navigate to="../login"/> :
         <StatsPage
           user={user}
+          className="mt-10"
           navBack={navBack}
+          signOut={signOut}
         />
       }></Route>
     </Routes>

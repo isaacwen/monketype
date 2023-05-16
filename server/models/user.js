@@ -13,7 +13,11 @@ const UserSchema = new mongoose.Schema({
   bestWPM15: {type: Number, default: -1},
   bestWPM30: {type: Number, default: -1},
   bestWPM60: {type: Number, default: -1},
-  bestWPM120: {type: Number, default: -1}
+  bestWPM120: {type: Number, default: -1},
+  bestWPM15Acc: {type: Number, default: -1},
+  bestWPM30Acc: {type: Number, default: -1},
+  bestWPM60Acc: {type: Number, default: -1},
+  bestWPM120Acc: {type: Number, default: -1}
 });
 
 UserSchema.pre("save", function (next) {
