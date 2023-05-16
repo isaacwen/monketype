@@ -20,10 +20,7 @@ const useWords = (enabled: boolean, windowSize: React.MutableRefObject<number>) 
   const [allTyped, setAllTyped] = useState("");
   const [currentRowTyped, setCurrentRowTyped] = useState("");
   const allWords = useRef("");
-  // var allWords = "";
-  // const [allWords, setAllWords] = useState("");
   const currentWordIdx = useRef(0);
-  // const [currentWordIdx, setCurrentWordIdx] = useState(0);
   const [currentRowWords, setCurrentRowWords] = useState("");
   const [nextRowWords, setNextRowWords] = useState("");
   const correctInputs = useRef(0);
@@ -31,8 +28,6 @@ const useWords = (enabled: boolean, windowSize: React.MutableRefObject<number>) 
 
   const updateRows = useCallback((windowSize: React.MutableRefObject<number>) => {
     const maxCharsInRow = Math.floor(windowSize.current / CHAR_SIZE_PIXELS);
-    console.log("windowSize: ", windowSize); //todo: remove
-    console.log("maxCharsInRow: ", maxCharsInRow); // todo: remove
 
     // reset cursor
     var newStart: number = currentWordIdx.current + cursor;
@@ -46,16 +41,9 @@ const useWords = (enabled: boolean, windowSize: React.MutableRefObject<number>) 
     setCurrentRowTyped(currentRowTyped.substring(newStart - currentWordIdx.current));
 
     currentWordIdx.current = newStart;
-    // setCurrentWordIdx(newStart);
-
-    // reset expected words
-    // while (allWords.current.length - currentWordIdx < 2 * MAX_ADD_CHARACTERS) {
-    //   allWords.current = allWords.current.concat(randomWords({exactly: 1, maxLength: 8, join: " "}), " ");
-    // }
     if (allWords.current.length - currentWordIdx.current < 2 * MAX_ADD_CHARACTERS) {
       allWords.current = allWords.current.concat(randomWords({exactly: 30, maxLength: 8, join: " "}), " ");
     }
-    console.log("printing allwords:", allWords); // TODO remove
 
     const getNextLineWords = (startIdx: number) => {
       let endIdx = startIdx;
@@ -82,7 +70,6 @@ const useWords = (enabled: boolean, windowSize: React.MutableRefObject<number>) 
   const finishedTypingRow = cursor >= currentRowWords.length;
   useEffect(() => {
     if (finishedTypingRow) {
-      console.log("Finsihed row of words, resetting...");
       updateRows(windowSize);
     }
   }, [finishedTypingRow, updateRows]);
@@ -147,10 +134,6 @@ const useWords = (enabled: boolean, windowSize: React.MutableRefObject<number>) 
     }
     processChars();
 
-    console.log("correctCharsInAllWords: ", correctCharsInAllWords);
-    console.log("correctCharsInFullyCorrectWords: ", correctCharsInFullyCorrectWords);
-    console.log("currentWordCorrectChars: ", currentWordCorrectChars);
-
     // per monkeytype: wpm is total amount of characters in the correctly typed
     // words (including spaces), divided by 5 and normalized to 60 seconds. raw
     // is the same was wpm except characters in incorrectly typed words are also
@@ -168,7 +151,6 @@ const useWords = (enabled: boolean, windowSize: React.MutableRefObject<number>) 
     setCurrentRowTyped("");
     allWords.current = "";
     currentWordIdx.current = 0;
-    // setCurrentWordIdx(0);
     setCurrentRowWords("");
     setNextRowWords("");
     correctInputs.current = 0;

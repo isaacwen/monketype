@@ -12,7 +12,6 @@ const Timer = ({
   const buttonRef = useRef<HTMLButtonElement>(null);
   
   const handleClick = (time: Times) => {
-    console.log("time:", time);
     testTime = time;
     setTestTime(time);
   };

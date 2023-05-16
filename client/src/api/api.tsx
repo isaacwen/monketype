@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 import User from "./User";
 
@@ -7,14 +7,6 @@ const api = axios.create({
 })
 
 export const addUser = async (payload: any) => {
-  // api.post('/user', payload)
-  //   .then((response) => {
-  //     // setShowErrorMessage(false);
-  //     showErrorMessage.current = false;
-  //   }).catch((error) => {
-  //     // setShowErrorMessage(true);
-  //     showErrorMessage.current = true;
-  //   })
   try {
     await api.post('/user', payload);
     return true;
@@ -24,14 +16,6 @@ export const addUser = async (payload: any) => {
 };
 
 export const verifyUser = async (payload: any) => {
-  // api.get('/verify', {params: payload})
-  //   .then((response) => {
-  //     // setShowErrorMessage(false);
-  //     showErrorMessage.current = false;
-  //   }).catch((error) => {
-  //     // setShowErrorMessage(true);
-  //     showErrorMessage.current = true;
-  //   })
   try {
     await api.get('/verify', {params: payload});
     return true;

@@ -56,13 +56,6 @@ verifyUser = async (req, res) => {
   })
 }
 
-// {
-//   username
-//   test
-//   wpm
-//   raw
-//   acc
-// }
 updateUser = async (req, res) => {
   const body = req.body;
 

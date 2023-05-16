@@ -1,8 +1,7 @@
-import React from "react";
 import { useRef, useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import useEngine from "./hooks/useEngine";
-import { AnimatePresence, motion, MotionValue } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import SingleplayerWordsPage from "./pages/SingleplayerWordsPage";
 import SingleplayerResultsPage from "./pages/SingleplayerResultsPage";
 import SignInPage from "./pages/SignInPage";
@@ -14,37 +13,21 @@ const MAX_TEXT_WINDOW_SIZE = 1152;
 const App = () => {
   const navigate = useNavigate();
   const textWidthRef = useRef<HTMLDivElement>(null);
-  // const [textWindowSize, setTextWindowSize] = useState<number>(MAX_TEXT_WINDOW_SIZE);
   const textWindowSize = useRef<number>(MAX_TEXT_WINDOW_SIZE);
-  const [mode, setMode] = useState<Mode>("singleplayer");
   const [user, setUser] = useState<string>("");
   const {state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart: restartMain, updateRows, setTestTime} = useEngine(textWindowSize, user);
 
   const textWidthResize = () => {
     if (textWidthRef.current) {
       textWindowSize.current = textWidthRef.current.offsetWidth;
-      // setTextWindowSize(textWidthRef.current.offsetWidth);
       updateRows(textWindowSize);
     }
   };
 
   const restart = () => {
     textWidthResize();
-    console.log("expected width: ", textWidthRef.current?.offsetWidth);
-    console.log("actual width: ", textWindowSize.current);
     restartMain();
     navigate("/");
-  }
-
-  const changeMode = () => {
-    if (mode === "singleplayer") {
-      navigate("/mp");
-      setMode("multiplayer");
-    } else {
-      navigate("/");
-      restartMain();
-      setMode("singleplayer");
-    }
   }
 
   const navProfile = () => {
@@ -68,7 +51,6 @@ const App = () => {
   }
 
   useEffect(() => {
-    console.log("updating size")
     if (textWidthRef.current && textWidthRef.current.offsetWidth !== textWindowSize.current) {
       textWidthResize();
     }

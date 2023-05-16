@@ -18,7 +18,6 @@ const StatsPage = ({
 
   useEffect(() => {
     api.getUser({"username": user}, setUserStats);
-    console.log(userStats);
   }, [user, setUserStats]);
 
   return (pageWrapper(

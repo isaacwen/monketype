@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useRef } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useCountdownTimer from "./useCountdownTimer";
 import useWords from "./useWords";
@@ -10,11 +10,9 @@ export type Times = typeof times[number];
 
 const useEngine = (textWindowSize: React.MutableRefObject<number>, user: string) => {
   const navigate = useNavigate();
-  // const testTime = useRef<Times>(30);
   const [testTime, setTestTime] = useState<Times>(30);
   const [state, setState] = useState<State>("start");
   const {timeLeft, startCountdown, resetCountdown} = useCountdownTimer(testTime);
-  // const { currentRowTyped, cursor, currentRowWords, clearTyped, updateWords } = useTypings(state !== "finish", textWindowSize);
   const { currentRowTyped, currentRowWords, nextRowWords, cursor, updateRows, resetWords, getStats: getStatsMain } = useWords(state !== "finish", textWindowSize);
 
   const isStarting = state === "start" && cursor > 0;
@@ -22,14 +20,12 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>, user: string)
   useEffect(() => {
     if (isStarting) {
       setState("run");
-      console.log(testTime);
       startCountdown(testTime);
     }
   }, [isStarting, startCountdown, cursor, testTime]);
 
   useEffect(() => {
     if (!timeLeft) {
-      console.log("time is up...");
       setState("finish");
       if (user !== "") {
         const stats = getStatsMain(testTime);
@@ -51,20 +47,10 @@ const useEngine = (textWindowSize: React.MutableRefObject<number>, user: string)
   }, [getStatsMain]);
 
   const restart = useCallback(() => {
-    console.log("restarting...");
     resetCountdown(testTime);
     setState("start");
     resetWords(textWindowSize);
-    console.log("window size: ", textWindowSize);
   }, [resetWords, resetCountdown]);
-
-  // const changeMode = useCallback(() => {
-  //   if (mode === "singleplayer") {
-  //     setMode("multiplayer");
-  //   } else {
-  //     setMode("singleplayer");
-  //   }
-  // }, [mode, setMode])
 
   return { state, currentRowWords, nextRowWords, timeLeft, currentRowTyped, testTime, getStats, restart, updateRows, setTestTime };
 }

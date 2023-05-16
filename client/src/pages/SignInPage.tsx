@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { SHA256, enc } from "crypto-js";
 import ButtonRow from "../components/ButtonRow";
 import api from "../api/api";
@@ -14,16 +14,10 @@ const SignInPage = ({
   const navigate = useNavigate();
   const [signingIn, setSigningIn] = useState(true);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
-  // const showErrorMessage = useRef(false);
 
   const changeSigningIn = () => {
     setSigningIn(!signingIn);
-    // showErrorMessage.current = false;
     setShowErrorMessage(false);
-  }
-
-  const handleError = (err: any) => {
-    console.log(err);
   }
 
   async function handleSubmit(event: React.FormEvent) {
